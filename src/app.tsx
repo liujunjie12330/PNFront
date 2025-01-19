@@ -6,7 +6,6 @@ import type { RunTimeLayoutConfig } from '@umijs/max';
 import { history, Link } from '@umijs/max';
 import defaultSettings from '../config/defaultSettings';
 import { errorConfig } from './requestConfig';
-import React from 'react';
 import {getCurrentUserUsingGet} from "@/services/PNUserCenter/loginController";
 const isDev = process.env.NODE_ENV === 'development';
 const loginPath = '/user/login';
@@ -32,6 +31,12 @@ export async function getInitialState(): Promise<{
   // 如果不是登录页面，执行
   const { location } = history;
   if (location.pathname !== loginPath) {
+    const urlParams = new URLSearchParams(location.search);
+    const token =  urlParams.get("token");
+    if (token){
+      console.log("url token", token);
+      localStorage.setItem("token",token);
+    }
     const currentUser = await fetchUserInfo();
     return {
       fetchUserInfo,

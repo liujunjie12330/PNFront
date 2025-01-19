@@ -15,6 +15,7 @@ import { createStyles } from 'antd-style';
 import React, { useState } from 'react';
 import { flushSync } from 'react-dom';
 import Settings from '../../../../config/defaultSettings';
+import {loginUsingPost} from "@/services/PNUserCenter/loginController";
 
 const useStyles = createStyles(({ token }) => {
   return {
@@ -60,15 +61,15 @@ const ActionIcons = () => {
       <GithubOutlined
         key="AlipayCircleOutlined"
         onClick={async () => {
-          window.location.href = 'http://localhost:9999/v1/usercenter/server/user/login/byGithub';
+          window.location.assign('http://localhost:9999/v1/usercenter/server/user/login/byGithub');
         }}
         className={styles.action}
       />
       <GitlabOutlined key="TaobaoCircleOutlined" onClick={async ()=>{
-        window.location.href = 'http://localhost:9999/v1/usercenter/server/user/login/byGitlab';
+        window.location.assign('http://localhost:9999/v1/usercenter/server/user/login/byGitlab');
       }} className={styles.action} />
       <GoogleOutlined key="WeiboCircleOutlined" onClick={async ()=>{
-        window.location.href = 'http://localhost:9999/v1/usercenter/server/user/login/byGitee';
+        window.location.assign('http://localhost:9999/v1/usercenter/server/user/login/byGitee');
       }} className={styles.action} />
     </>
   );
@@ -143,8 +144,8 @@ const Login: React.FC = () => {
   const handleSubmit = async (values: API.LoginParams) => {
     try {
       // 登录
-      const msg = await login({ ...values, type });
-      if (msg.status === 'ok') {
+      const msg = await loginUsingPost({ ...values });
+      if (msg.code === 200) {
         const defaultLoginSuccessMessage = intl.formatMessage({
           id: 'pages.login.success',
           defaultMessage: '登录成功！',
