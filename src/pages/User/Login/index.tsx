@@ -1,5 +1,6 @@
 import { Footer } from '@/components';
 import { getCodeUsingGet } from '@/services/PNUserCenter/captchaController';
+import { loginUsingPost } from '@/services/PNUserCenter/loginController';
 import {
   GithubOutlined,
   GitlabOutlined,
@@ -10,12 +11,12 @@ import {
 } from '@ant-design/icons';
 import { LoginForm, ProForm, ProFormText } from '@ant-design/pro-components';
 import { FormattedMessage, Helmet, history, SelectLang, useIntl, useModel } from '@umijs/max';
-import { Alert, message, Tabs } from 'antd';
+import { message, Tabs } from 'antd';
 import { createStyles } from 'antd-style';
+import { values } from 'lodash';
 import React, { useState } from 'react';
 import { flushSync } from 'react-dom';
 import Settings from '../../../../config/defaultSettings';
-import {loginUsingPost} from "@/services/PNUserCenter/loginController";
 
 const useStyles = createStyles(({ token }) => {
   return {
@@ -65,12 +66,20 @@ const ActionIcons = () => {
         }}
         className={styles.action}
       />
-      <GitlabOutlined key="TaobaoCircleOutlined" onClick={async ()=>{
-        window.location.assign('http://localhost:9999/v1/usercenter/server/user/login/byGitlab');
-      }} className={styles.action} />
-      <GoogleOutlined key="WeiboCircleOutlined" onClick={async ()=>{
-        window.location.assign('http://localhost:9999/v1/usercenter/server/user/login/byGitee');
-      }} className={styles.action} />
+      <GitlabOutlined
+        key="TaobaoCircleOutlined"
+        onClick={async () => {
+          window.location.assign('http://localhost:9999/v1/usercenter/server/user/login/byGitlab');
+        }}
+        className={styles.action}
+      />
+      <GoogleOutlined
+        key="WeiboCircleOutlined"
+        onClick={async () => {
+          window.location.assign('http://localhost:9999/v1/usercenter/server/user/login/byGitee');
+        }}
+        className={styles.action}
+      />
     </>
   );
 };
@@ -85,23 +94,8 @@ const Lang = () => {
   );
 };
 
-const LoginMessage: React.FC<{
-  content: string;
-}> = ({ content }) => {
-  return (
-    <Alert
-      style={{
-        marginBottom: 24,
-      }}
-      message={content}
-      type="error"
-      showIcon
-    />
-  );
-};
-
 const Login: React.FC = () => {
-  const [userLoginState, setUserLoginState] = useState<API.LoginResult>({});
+  const [userLoginState, setUserLoginState] = useState<string>('');
   const [form] = ProForm.useForm();
   const [type, setType] = useState<string>('account');
   const { initialState, setInitialState } = useModel('@@initialState');
@@ -123,6 +117,7 @@ const Login: React.FC = () => {
       return null;
     }
     await getCodeUsingGet({
+      ...values,
       username: username,
     } as API.getCodeUsingGETParams).then((res) => {
       setImage('data:image/png;base64,' + res.data);
@@ -158,7 +153,7 @@ const Login: React.FC = () => {
       }
       console.log(msg);
       // 如果失败去设置用户错误信息
-      setUserLoginState(msg);
+      setUserLoginState('false');
     } catch (error) {
       const defaultLoginFailureMessage = intl.formatMessage({
         id: 'pages.login.failure',
@@ -168,7 +163,7 @@ const Login: React.FC = () => {
       message.error(defaultLoginFailureMessage);
     }
   };
-  const { status, type: loginType } = userLoginState;
+  //const { status, type: loginType } = userLoginState;
 
   return (
     <div className={styles.container}>

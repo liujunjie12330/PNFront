@@ -17,20 +17,17 @@ export async function deletionUsingPost(
   });
 }
 
-/** register POST /v1/usercenter/server/user/v1/usercenter/server/register */
+/** register POST /v1/usercenter/server/user/register */
 export async function registerUsingPost(
   body: API.UserRegisterParam,
   options?: { [key: string]: any },
 ) {
-  return request<API.BaseResponseString_>(
-    '/v1/usercenter/server/user/v1/usercenter/server/register',
-    {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      data: body,
-      ...(options || {}),
+  return request<API.BaseResponseString_>('/v1/usercenter/server/user/register', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
     },
-  );
+    data: body,
+    ...(options || {}),
+  });
 }

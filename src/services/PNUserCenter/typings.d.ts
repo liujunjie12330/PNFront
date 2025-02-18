@@ -43,6 +43,7 @@ declare namespace API {
   };
 
   type UserVo = {
+    avatar?: string;
     email?: string;
     fullName?: string;
     id?: number;

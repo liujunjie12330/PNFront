@@ -9,7 +9,7 @@ export async function loginUsingGet(
   options?: { [key: string]: any },
 ) {
   const { resource: param0, ...queryParams } = params;
-  return request<API.BaseResponseString_>(`/v1/usercenter/server/user/callback/login/${param0}`, {
+  return request<any>(`/v1/usercenter/server/user/callback/login/${param0}`, {
     method: 'GET',
     params: {
       ...queryParams,
@@ -58,6 +58,14 @@ export async function loginUsingPost(body: API.UserLoginParams, options?: { [key
       'Content-Type': 'application/json',
     },
     data: body,
+    ...(options || {}),
+  });
+}
+
+/** outLogin POST /v1/usercenter/server/user/out/login */
+export async function outLoginUsingPost(options?: { [key: string]: any }) {
+  return request<API.BaseResponseString_>('/v1/usercenter/server/user/out/login', {
+    method: 'POST',
     ...(options || {}),
   });
 }
