@@ -1,4 +1,10 @@
 declare namespace API {
+  type BaseResponseListCatalogPaveVo_ = {
+    code?: number;
+    data?: CatalogPaveVo[];
+    msg?: string;
+  };
+
   type BaseResponseString_ = {
     code?: number;
     data?: string;
@@ -9,6 +15,19 @@ declare namespace API {
     code?: number;
     data?: UserVo;
     msg?: string;
+  };
+
+  type CatalogPaveVo = {
+    categoryId?: number;
+    categoryName?: string;
+    crateUserId?: number;
+    crateUsername?: string;
+    createAt?: string;
+    rank?: number;
+    status?: number;
+    updateAt?: string;
+    updateUserId?: number;
+    updateUsername?: string;
   };
 
   type getCodeUsingGETParams = {

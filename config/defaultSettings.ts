@@ -9,15 +9,15 @@ const Settings: ProLayoutProps & {
 } = {
   navTheme: "light",
   colorPrimary: "#1890ff",
-  layout: "top",
+  layout: "mix",
   contentWidth: "Fluid",
   fixedHeader: false,
-  fixSiderbar: false,
+  fixSiderbar: true,
   pwa: true,
   title:'编程导航',
   logo: "https://gw.alipayobjects.com/zos/rmsportal/KDpgvguMpGfqaHPjicRK.svg",
   token: {},
-  splitMenus: false,
+  splitMenus: true,
   footerRender:false
 }
 
