@@ -30,6 +30,7 @@ const headerArticleStyle: React.CSSProperties = {
   display: 'flex', // Use flexbox for horizontal layout
   justifyContent: 'space-between', // Space between items
   alignItems: 'center', //
+  border:'20px solid #ccc',
 };
 
 const contentStyle: React.CSSProperties = {
@@ -48,11 +49,6 @@ const siderStyle: React.CSSProperties = {
   backgroundColor: '#1677ff',
 };
 
-const footerStyle: React.CSSProperties = {
-  textAlign: 'center',
-  color: '#fff',
-  backgroundColor: '#4096ff',
-};
 
 const layoutStyle = {
   borderRadius: 8,
