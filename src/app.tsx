@@ -1,16 +1,16 @@
 import { AvatarDropdown, AvatarName, Footer } from '@/components';
 import { getCurrentUserUsingGet } from '@/services/PNUserCenter/loginController';
-import {AppstoreAddOutlined, HomeOutlined, LinkOutlined} from '@ant-design/icons';
+import { EditTwoTone } from '@ant-design/icons';
 import type { Settings as LayoutSettings } from '@ant-design/pro-components';
-import { SettingDrawer } from '@ant-design/pro-components';
 import type { RunTimeLayoutConfig } from '@umijs/max';
-import { history, Link } from '@umijs/max';
+import { history } from '@umijs/max';
+import { Tag } from 'antd';
 import defaultSettings from '../config/defaultSettings';
 import { errorConfig } from './requestConfig';
-import {Menu} from "antd";
-import React from "react";
+
 const isDev = process.env.NODE_ENV === 'development';
 const loginPath = '/user/login';
+const writePath = '/write';
 
 /**
  * @see  https://umijs.org/zh-CN/plugins/plugin-initial-state
@@ -55,10 +55,15 @@ export async function getInitialState(): Promise<{
 // ProLayout 支持的api https://procomponents.ant.design/components/layout
 export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) => {
   return {
-    //actionsRender: () => [<Question key="doc" />],
+    actionsRender: () => [
+      <Tag onClick={() => {history.push(writePath)}} style={{ fontSize: '10', color: '#1c83dc', fontStyle: 'inherit' }}>
+        <EditTwoTone key="编辑文章" />
+        编辑文章
+      </Tag>,
+    ],
     avatarProps: {
       src: initialState?.currentUser?.avatar,
-      title: <AvatarName/>,
+      title: <AvatarName />,
       render: (_, avatarChildren) => {
         return <AvatarDropdown>{avatarChildren}</AvatarDropdown>;
       },
@@ -66,9 +71,9 @@ export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) =
     waterMarkProps: {
       content: initialState?.currentUser?.username,
     },
-    footerRender: () => <Footer/>,
+    footerRender: () => <Footer />,
     onPageChange: () => {
-      const {location} = history;
+      const { location } = history;
       // 如果没有登录，重定向到 login
       if (!initialState?.currentUser && location.pathname !== loginPath) {
         history.push(loginPath);
@@ -94,7 +99,7 @@ export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) =
         width: '331px',
       },
     ],
-    menuHeaderRender:undefined,
+    menuHeaderRender: undefined,
     // 自定义 403 页面
     // unAccessible: <div>unAccessible</div>,
     // 增加一个 loading 的状态

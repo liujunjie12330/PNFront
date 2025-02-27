@@ -1,13 +1,21 @@
-﻿import * as path from "node:path";
-
-export default [
+﻿export default [
   {
     path: '/user',
     layout: false,
     routes: [{ name: '登录', path: '/user/login', component: './User/Login' }],
   },
   {
-    path: '/welcome', name: '首页', icon: '', component: './HomePage'
+    path: '/welcome',
+    name: '首页',
+    icon: 'crown',
+    component: './HomePage',
+  },
+  {
+    path: '/write',
+    name:'编辑',
+    menuRender: false,
+    hideInMenu: true,
+    component: './WritePage',
   },
   {
     path: '/admin',
@@ -15,7 +23,10 @@ export default [
     icon: 'crown',
     routes: [
       { path: '/admin', redirect: '/admin/sub-page' },
-      { path: '/admin/sub-page', name: '二级管理页', component: './Admin',
+      {
+        path: '/admin/sub-page',
+        name: '二级管理页',
+        component: './Admin',
         // routes: [
         //   // 三级菜单
         //   {

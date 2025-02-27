@@ -1,0 +1,97 @@
+/* index.css */
+
+/* .bytemd 编辑器容器，调整高度避免遮挡 */
+.bytemd {
+  height: calc(100vh - 220px); /* 减去导航栏和其他固定元素的高度 */
+  position: relative;
+  z-index: 999; /* 确保编辑器在前面 */
+}
+
+/* 页面容器，占满屏幕 */
+.page-wrap {
+  display: flex;
+  flex-direction: column;
+  height: 100vh; /* 让容器占据整个视口的高度 */
+  margin: 0; /* 去掉默认边距 */
+  padding: 0; /* 去掉默认内边距 */
+  box-sizing: border-box; /* 确保宽高计算时包含边框和内边距 */
+  position: relative; /* 让子元素可以通过 position 调整 */
+}
+
+/* 顶部的导航栏和标题输入框部分 */
+.header {
+  height: 60px; /* 设置导航栏的高度 */
+  width: 100%; /* 占据整个宽度 */
+  background-color: #f5f5f5; /* 可选：背景色 */
+  display: flex;
+  align-items: center; /* 居中内容 */
+  padding: 0 20px; /* 内边距 */
+  box-sizing: border-box;
+}
+
+/* 编辑器容器，占满剩余空间 */
+.editor-container {
+  flex-grow: 1; /* 使编辑器容器填充剩余的空间 */
+  width: 100%;
+  padding: 20px; /* 可选：编辑器周围的内边距 */
+  box-sizing: border-box;
+}
+
+/* 编辑器，铺满编辑器容器 */
+.bytemd-editor {
+  width: 100%;
+  height: 100%;
+  max-width: 100%;
+  max-height: 100%;
+  border: 1px solid #ddd;
+  box-sizing: border-box;
+  background-color: #fff;
+  transition: all 0.3s ease; /* 添加平滑过渡 */
+}
+
+/* 全屏模式 */
+.bytemd-editor.fullscreen {
+  position: fixed; /* 使编辑器固定在页面 */
+  top: 60px; /* 距离顶部导航栏一定的高度 */
+  left: 0;
+  width: 100vw; /* 宽度占满整个视口 */
+  height: calc(100vh - 60px); /* 高度占满剩余视口，减去导航栏的高度 */
+  z-index: 9999; /* 确保编辑器在最前面 */
+  border-radius: 0; /* 去掉边框圆角 */
+  overflow: auto; /* 使内容可滚动 */
+}
+
+/* CustomRadioGroup.css */
+
+/* 定义自定义 radio 按钮组的样式 */
+.custom-radio-group .ant-radio-button-wrapper {
+  margin-right: 8px; /* 右侧空隙 */
+  width: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.custom-radio-group {
+  display: flex;
+  flex-wrap: wrap; /* 允许换行 */
+  gap: 10px; /* 行间距 */
+  justify-content: flex-start; /* 确保内容从左侧开始排列 */
+}
+
+/* 控制第一个和最后一个按钮的圆角 */
+.custom-radio-group .ant-radio-button-wrapper:first-child {
+  border-top-left-radius: 0; /* 左上圆角 */
+  border-bottom-left-radius: 0; /* 左下圆角 */
+}
+
+.custom-radio-group .ant-radio-button-wrapper:last-child {
+  border-top-right-radius: 0; /* 右上圆角 */
+  border-bottom-right-radius: 0; /* 右下圆角 */
+}
+
+/* .bytemd-preview 防止外部滚动条出现 */
+.bytemd-preview {
+  position: relative; /* 解决外部容器出现滚动条的 bug */
+  overflow: hidden; /* 如果有多余内容，隐藏溢出 */
+}

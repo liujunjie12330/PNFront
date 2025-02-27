@@ -2,6 +2,7 @@ import { listAllCatalogsUsingGet } from '@/services/PNUserCenter/catalogControll
 import {Button, Input, Layout, List} from 'antd';
 import React, { useEffect, useState } from 'react';
 import {CloseOutlined, SearchOutlined} from "@ant-design/icons";
+import ArticleList from "@/pages/HomePage/Components/ArticleList";
 
 const { Search } = Input;
 const { Header, Footer, Sider, Content } = Layout;
@@ -39,7 +40,8 @@ const contentStyle: React.CSSProperties = {
   lineHeight: '120px',
   color: '#fff',
   marginRight: '3%',
-  backgroundColor: '#0958d9',
+  backgroundColor: '#ffffff',
+  overflow: "auto"
 };
 
 const siderStyle: React.CSSProperties = {
@@ -47,6 +49,7 @@ const siderStyle: React.CSSProperties = {
   lineHeight: '120px',
   color: '#fff',
   backgroundColor: '#1677ff',
+  overflow:'auto'
 };
 
 
@@ -101,7 +104,9 @@ const HomePage: React.FC = () => {
         </Header>
         <Header style={headerArticleStyle}>asdhauivhsuiad</Header>
         <Layout style={{ minHeight: 'calc(100vh - 128px)' }}>
-          <Content style={contentStyle}>Content</Content>
+          <Content style={contentStyle} >
+            <ArticleList/>
+          </Content>
           <Sider width="20%" style={siderStyle}>
             Sider
           </Sider>
