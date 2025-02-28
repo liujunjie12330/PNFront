@@ -22,6 +22,7 @@ import {
   readTypeOptions,
   SourceType,
 } from '@/emun/Article';
+import { saveArticleUsingPost } from '@/services/PNUserCenter/articleController';
 import { listAllCatalogsUsingGet } from '@/services/PNUserCenter/catalogController';
 import { uploadArticleImageUsingPost } from '@/services/PNUserCenter/fileController';
 import { MapItem } from '@/typings/common';
@@ -33,7 +34,7 @@ import {
 } from '@ant-design/icons';
 import math from '@bytemd/plugin-math';
 import { useNavigate } from '@umijs/max';
-import { Button, Drawer, Form, Input, Radio, Space, Tag } from 'antd';
+import { Button, Drawer, Form, Input, message, Radio, Space, Tag } from 'antd';
 import TextArea from 'antd/lib/input/TextArea';
 import './index.scss';
 
@@ -43,11 +44,12 @@ const plugins = [gfm(), highlight(), gemoji(), math(), mediumZoom()];
 const defaultInitForm: API.ArticleSaveParams = {
   articleType: ArticleType.BLOG.value,
   source: SourceType.ORIGINAL.value,
+  payAmount:0.99+''
 };
 
 const WritePage: React.FC = () => {
   const [content, setContent] = useState('');
-  const [article, setArticle] = useState<API.ArticleSaveParams>();
+  const [article, setArticle] = useState<API.ArticleSaveParams>(defaultInitForm);
   const [post, setPost] = useState<boolean>(true);
   const [isOpenDrawerShow, setIsOpenDrawerShow] = useState<boolean>(false);
   const [options, setOptions] = useState<any[]>([]);
@@ -70,32 +72,37 @@ const WritePage: React.FC = () => {
 
   const handleChange = (item: MapItem) => {
     setArticle({ ...article, ...item });
-    console.log('handleChange 时看看form的值', item);
   };
 
   const handleCoverChange = (item: string) => {
     setArticle({ ...article, cover: item });
-    console.log('handleChange 时看看form的值', item);
   };
 
   const handlePayImage = (item: string) => {
     setArticle({ ...article, payImageUrl: item });
   };
-  const handleSubmit = (form: API.ArticleSaveParams) => {
+  const handleSubmit = async (form: API.ArticleSaveParams) => {
     if (post) {
+      alert(post);
       setArticle({ ...article, actionType: ArticleSaveType.POST.value });
     } else {
       setArticle({ ...article, actionType: ArticleSaveType.SAVE.value });
     }
-    //现在只有博文类型
-    setArticle({ ...article, articleType: ArticleType.BLOG.value });
-    console.log('form', article);
+    const res = await saveArticleUsingPost(article);
+    if (res.code === 200) {
+      message.success(res.msg);
+    }
   };
 
   // 标题、分类、标签、封面、简介
   const drawerContent = (
     <Form labelCol={{ span: 4 }} wrapperCol={{ span: 16 }} autoComplete="off">
-      <Form.Item label="简介" tooltip={'至少10个字'} name="summary" rules={[{ required: true, message: '请输入简介!' }]}>
+      <Form.Item
+        label="简介"
+        tooltip={'至少10个字'}
+        name="summary"
+        rules={[{ required: true, message: '请输入简介!' }]}
+      >
         <TextArea
           allowClear
           // 行数
@@ -105,7 +112,7 @@ const WritePage: React.FC = () => {
           }}
         />
       </Form.Item>
-      <Form.Item rules={[{required:true,message:'请上传封面!'}]} label="封面" name="cover">
+      <Form.Item rules={[{ required: true, message: '请上传封面!' }]} label="封面" name="cover">
         <ImgUpload handleChange={handleCoverChange} />
       </Form.Item>
       <Form.Item
@@ -202,6 +209,7 @@ const WritePage: React.FC = () => {
               onChange={(e) => {
                 console.log('readTypeOptions', e.target.value);
                 // @ts-ignore
+                if (e.target.value)
                 setArticle({ ...article, payAmount: e.target.value });
               }}
             />
@@ -215,12 +223,13 @@ const WritePage: React.FC = () => {
     <div className="page-wrap">
       {/* 顶部导航栏 */}
       <div style={{ display: 'flex', flexDirection: 'column' }}>
-        <Tag style={{ width: '30px' }}>
+        <Tag style={{ width: '75px' }}>
           <DoubleLeftOutlined
             onClick={() => {
               navigate(-1);
             }}
           />
+          点击返回
         </Tag>
       </div>
       <div className="header" style={{ display: 'flex', justifyContent: 'space-between' }}>
@@ -237,7 +246,19 @@ const WritePage: React.FC = () => {
           }}
         />
         <div className="save" style={{ padding: '2px', marginRight: '10' }}>
-          <Button color="cyan" variant="solid" disabled={!(article!=null &&article.title!=null && article.title!='' && article.title.length > 6)} onClick={() => setIsOpenDrawerShow(true)}>
+          <Button
+            color="cyan"
+            variant="solid"
+            disabled={
+              !(
+                article != null &&
+                article.title != null &&
+                article.title != '' &&
+                article.title.length > 6
+              )
+            }
+            onClick={() => setIsOpenDrawerShow(true)}
+          >
             保存
           </Button>
         </div>
@@ -296,10 +317,36 @@ const WritePage: React.FC = () => {
           <Space>
             <Button onClick={() => setArticle(defaultInitForm)}>重置</Button>
             {/*@ts-ignore*/}
-            <Button type="primary" disabled={!(article!=null &&article.summary!=null && article.summary!='' && article.summary.length > 10)} onClick={handleSubmit}>
+            <Button
+              type="primary"
+              disabled={
+                !(
+                  article != null &&
+                  article.summary != null &&
+                  article.summary != '' &&
+                  article.summary.length > 10
+                )
+              }
+              //@ts-ignore
+              onClick={handleSubmit}
+            >
               {article?.articleId ? '确认更新' : '确认保存'}
             </Button>
-            <Button type="primary" disabled={!(article!=null &&article.summary!=null && article.summary!='' && article.summary.length > 10)}  onClick={() => setPost(false)}>
+            <Button
+              type="primary"
+              disabled={
+                !(
+                  article != null &&
+                  article.summary != null &&
+                  article.summary != '' &&
+                  article.summary.length > 10
+                )
+              }
+              onClick={() => {
+                setPost(false);
+                handleSubmit(article as API.ArticleSaveParams);
+              }}
+            >
               暂存
             </Button>
           </Space>

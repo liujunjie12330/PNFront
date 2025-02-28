@@ -1,7 +1,7 @@
 import { Avatar, Card, Divider, List, Skeleton, Tag } from 'antd';
 import React, { useEffect, useState } from 'react';
 // @ts-ignore
-import { pageUsingPost } from '@/services/PNUserCenter/articleController';
+import { pageArticleUsingPost } from '@/services/PNUserCenter/articleController';
 import { EyeFilled, LikeOutlined, MessageOutlined } from '@ant-design/icons';
 import InfiniteScroll from 'react-infinite-scroll-component';
 
@@ -14,7 +14,7 @@ const ArticleList: React.FC = () => {
       return;
     }
     setLoading(true);
-    const res = await pageUsingPost({
+    const res = await pageArticleUsingPost({
       ...values,
     });
     if (res.code === 200) {
@@ -41,7 +41,7 @@ const ArticleList: React.FC = () => {
     >
       <InfiniteScroll
         dataLength={data.length}
-        next={() => loadMoreData({ current: data.length / 10 + 1, size: 20 })}
+        next={() => loadMoreData({ current: data.length / 10 + 1, size: 10 })}
         loader={<Skeleton avatar paragraph={{ rows: 1 }} active />}
         endMessage={<Divider plain>It is all, nothing more 🤐</Divider>}
         scrollThreshold={0.9} // 设置滚动到90%时触发加载
