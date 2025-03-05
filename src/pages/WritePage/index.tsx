@@ -25,6 +25,7 @@ import {
 import { saveArticleUsingPost } from '@/services/PNUserCenter/articleController';
 import { listAllCatalogsUsingGet } from '@/services/PNUserCenter/catalogController';
 import { uploadArticleImageUsingPost } from '@/services/PNUserCenter/fileController';
+import { existAlipayUserInfoUsingGet } from '@/services/PNUserCenter/userSettingController';
 import { MapItem } from '@/typings/common';
 import {
   AlipayOutlined,
@@ -34,7 +35,7 @@ import {
 } from '@ant-design/icons';
 import math from '@bytemd/plugin-math';
 import { useNavigate } from '@umijs/max';
-import { Button, Drawer, Form, Input, message, Radio, Space, Tag } from 'antd';
+import { Button, Drawer, Form, Input, message, Modal, Radio, Space, Tag } from 'antd';
 import TextArea from 'antd/lib/input/TextArea';
 import './index.scss';
 
@@ -44,7 +45,7 @@ const plugins = [gfm(), highlight(), gemoji(), math(), mediumZoom()];
 const defaultInitForm: API.ArticleSaveParams = {
   articleType: ArticleType.BLOG.value,
   source: SourceType.ORIGINAL.value,
-  payAmount:0.99+''
+  payAmount: 0.99 + '',
 };
 
 const WritePage: React.FC = () => {
@@ -54,6 +55,17 @@ const WritePage: React.FC = () => {
   const [isOpenDrawerShow, setIsOpenDrawerShow] = useState<boolean>(false);
   const [options, setOptions] = useState<any[]>([]);
   const navigate = useNavigate();
+  const [isBindAlipay, setIsBindAlipay] = useState<boolean>(false);
+
+  useEffect(() => {
+    const fetchAlipayUserInfoExist = async () => {
+      const res = await existAlipayUserInfoUsingGet();
+      if (res.code === 200 && res.data) {
+        setIsBindAlipay(res.data);
+      }
+    };
+    fetchAlipayUserInfoExist();
+  }, []);
 
   useEffect(() => {
     const fetchCatalogs = async () => {
@@ -89,7 +101,7 @@ const WritePage: React.FC = () => {
     }
     const res = await saveArticleUsingPost(article);
     if (res.code === 200) {
-      alert("ssss")
+      alert('ssss');
       message.success(res.msg);
     }
   };
@@ -156,8 +168,23 @@ const WritePage: React.FC = () => {
           buttonStyle="solid"
           options={readTypeOptions}
           onChange={(e) => {
-            console.log('readTypeOptions', e.target.value);
-            setArticle({ ...article, readType: e.target.value });
+            if (e.target.value === 3 && !isBindAlipay) {
+              Modal.confirm({
+                title: '提醒',
+                content: '您还没有绑定支付宝账户，是否绑定？',
+                onOk() {
+                  window.location.assign(
+                    'http://localhost:9999/v1/usercenter/server/userSetting/bindUserAlipay',
+                  );
+                },
+                onCancel() {
+                  console.log('用户取消付费阅读');
+                },
+              });
+            } else {
+              console.log('readTypeOptions', e.target.value);
+              setArticle({ ...article, readType: e.target.value });
+            }
           }}
         />
       </Form.Item>
@@ -209,8 +236,7 @@ const WritePage: React.FC = () => {
               onChange={(e) => {
                 console.log('readTypeOptions', e.target.value);
                 // @ts-ignore
-                if (e.target.value)
-                setArticle({ ...article, payAmount: e.target.value });
+                if (e.target.value) setArticle({ ...article, payAmount: e.target.value });
               }}
             />
           </div>

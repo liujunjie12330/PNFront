@@ -9,3 +9,11 @@ export async function bindAlipayAccountUsingGet(options?: { [key: string]: any }
     ...(options || {}),
   });
 }
+
+/** existAlipayUserInfo GET /v1/usercenter/server/userSetting/existAlipayUser */
+export async function existAlipayUserInfoUsingGet(options?: { [key: string]: any }) {
+  return request<API.BaseResponseBoolean_>('/v1/usercenter/server/userSetting/existAlipayUser', {
+    method: 'GET',
+    ...(options || {}),
+  });
+}

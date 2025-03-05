@@ -89,6 +89,12 @@ declare namespace API {
     msg?: string;
   };
 
+  type BaseResponseBoolean_ = {
+    code?: number;
+    data?: boolean;
+    msg?: string;
+  };
+
   type BaseResponseListCatalogPaveVo_ = {
     code?: number;
     data?: CatalogPaveVo[];
