@@ -11,6 +11,12 @@
     component: './HomePage',
   },
   {
+    path: '/show',
+    name: '首页',
+    icon: 'crown',
+    component: './ShowPage',
+  },
+  {
     path: '/write',
     name:'编辑',
     menuRender: false,

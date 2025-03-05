@@ -106,17 +106,17 @@ const ArticleList: React.FC = () => {
                       <span>
                         <MessageOutlined />
                         {/*@ts-ignore*/}
-                        &nbsp;{item.articleFootCountDTO.readCount}
+                        &nbsp;0
                       </span>
                       <span style={{ marginLeft: 16 }}>
                         <EyeFilled />
                         {/*@ts-ignore*/}
-                        &nbsp;{item.articleFootCountDTO.commentCount}
+                        &nbsp;0
                       </span>
                       <span style={{ marginLeft: 16 }}>
                         <LikeOutlined />
                         {/*@ts-ignore*/}
-                        &nbsp;{item.articleFootCountDTO.praiseCount}
+                        &nbsp;0
                       </span>
                     </div>
                     <div style={{ flex: 1, textAlign: 'right' }}></div>

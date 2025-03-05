@@ -1,5 +1,5 @@
 declare namespace API {
-  type ArticleFootCountDTO = {
+  type ArticleFootCountVo = {
     collectionCount?: number;
     commentCount?: number;
     praiseCount?: number;
@@ -18,7 +18,7 @@ declare namespace API {
   };
 
   type ArticleIndexVo = {
-    articleFootCountDTO?: ArticleFootCountDTO;
+    articleFootCountVo?: ArticleFootCountVo;
     articleId?: number;
     authorAvatar?: string;
     authorId?: number;
@@ -60,6 +60,33 @@ declare namespace API {
     summary?: string;
     tagIds?: number[];
     title?: string;
+  };
+
+  type ArticleVO = {
+    articleId?: number;
+    articleType?: number;
+    authorInfo?: SimpleUserInfoDTO;
+    catalog?: CatalogPaveVo;
+    context?: string;
+    countVo?: ArticleFootCountVo;
+    cover?: string;
+    officalStat?: number;
+    paid?: boolean;
+    payImageUrl?: string;
+    recommend?: number;
+    shortTitle?: string;
+    source?: number;
+    sourceUrl?: string;
+    summary?: string;
+    tags?: TagVo[];
+    title?: string;
+    url?: string;
+  };
+
+  type BaseResponseArticleVO_ = {
+    code?: number;
+    data?: ArticleVO;
+    msg?: string;
   };
 
   type BaseResponseListCatalogPaveVo_ = {
@@ -156,6 +183,18 @@ declare namespace API {
     searchCount?: boolean;
     size?: number;
     total?: number;
+  };
+
+  type readUsingGETParams = {
+    /** id */
+    id: number;
+  };
+
+  type SimpleUserInfoDTO = {
+    avatar?: string;
+    name?: string;
+    profile?: string;
+    userId?: number;
   };
 
   type TagParam = {

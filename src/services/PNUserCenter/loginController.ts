@@ -42,8 +42,8 @@ export async function loginByGithubUsingGet(options?: { [key: string]: any }) {
   });
 }
 
-/** loginBylab GET /v1/usercenter/server/user/login/byGitlab */
-export async function loginBylabUsingGet(options?: { [key: string]: any }) {
+/** loginByGitlab GET /v1/usercenter/server/user/login/byGitlab */
+export async function loginByGitlabUsingGet(options?: { [key: string]: any }) {
   return request<any>('/v1/usercenter/server/user/login/byGitlab', {
     method: 'GET',
     ...(options || {}),

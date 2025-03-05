@@ -1,3 +1,5 @@
+import {darcula, oneDark, prism, vs} from "react-syntax-highlighter/dist/esm/styles/prism";
+
 /**
  * 阅读类型
  */
@@ -47,3 +49,10 @@ export const SourceType = {
 } as const;
 
 type SourceType = typeof SourceType[keyof typeof SourceType];
+// 主题枚举
+export enum ThemeEnum {
+  DEFAULT = prism,
+  ONEDARK = oneDark,
+  Darcula = darcula,
+  VS = vs,
+}

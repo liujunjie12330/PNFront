@@ -83,13 +83,13 @@ const WritePage: React.FC = () => {
   };
   const handleSubmit = async (form: API.ArticleSaveParams) => {
     if (post) {
-      alert(post);
       setArticle({ ...article, actionType: ArticleSaveType.POST.value });
     } else {
       setArticle({ ...article, actionType: ArticleSaveType.SAVE.value });
     }
     const res = await saveArticleUsingPost(article);
     if (res.code === 200) {
+      alert("ssss")
       message.success(res.msg);
     }
   };
