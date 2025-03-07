@@ -25,6 +25,13 @@
     component: './WritePage',
   },
   {
+    path: '/transfer/:articleId',
+    name:'编辑',
+    // menuRender: false,
+    // hideInMenu: true,
+    component: './Transfer',
+  },
+  {
     path: '/admin',
     name: '管理页',
     icon: 'crown',
