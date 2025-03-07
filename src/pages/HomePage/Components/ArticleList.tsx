@@ -1,10 +1,11 @@
-import { Avatar, Card, Divider, List, Skeleton, Tag } from 'antd';
+import {Avatar, Card, Divider, List, Modal, Skeleton, Tag} from 'antd';
 import React, { useEffect, useState } from 'react';
 // @ts-ignore
-import { pageArticleUsingPost } from '@/services/PNUserCenter/articleController';
+import { ReadType } from '@/emun/Article';
+import { isPaidUsingGet, pageArticleUsingPost } from '@/services/PNUserCenter/articleController';
 import { EyeFilled, LikeOutlined, MessageOutlined } from '@ant-design/icons';
 import InfiniteScroll from 'react-infinite-scroll-component';
-
+import { history } from '@umijs/max';
 const ArticleList: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState<API.ArticleIndexVo[]>([]);
@@ -52,7 +53,26 @@ const ArticleList: React.FC = () => {
         <List
           dataSource={data}
           renderItem={(item) => (
-            <List.Item key={item.articleId}>
+            <List.Item
+              key={item.articleId}
+              onClick={async () => {
+                if (item.readType === ReadType.PAY_READ.value) {
+                  const res = await isPaidUsingGet({ articleId: item.articleId });
+                  if (res.code === 200 && res.data!=null && !res.data) {
+                    Modal.confirm({
+                      title: '提醒',
+                      content: '该文章是付费文章,您还没有支付过该文章,是否支付?',
+                      onOk() {
+                        history.push("/article/detail/"+item.articleId);
+                      },
+                      onCancel() {
+                        console.log('用户取消付费阅读');
+                      },
+                    });
+                  }
+                }
+              }}
+            >
               <Card
                 hoverable
                 style={{ marginBottom: 16, width: '100%' }}
@@ -73,7 +93,7 @@ const ArticleList: React.FC = () => {
                     }}
                   >
                     {/* 是否推荐的标志 */}
-                    {item.recommend===1 && (
+                    {item.recommend === 1 && (
                       <Tag color="success" style={{ marginRight: '8px' }}>
                         推荐
                       </Tag>

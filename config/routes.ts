@@ -11,10 +11,11 @@
     component: './HomePage',
   },
   {
-    path: '/show',
+    path: '/article/detail/:articleId',
     name: '首页',
-    icon: 'crown',
+    icon: 'BookOutlined',
     component: './ShowPage',
+    hideInMenu: true,
   },
   {
     path: '/write',

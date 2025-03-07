@@ -155,6 +155,7 @@ const Login: React.FC = () => {
           {'登录'}- {Settings.title}
         </title>
       </Helmet>
+      {/*@ts-ignore*/}
       <Lang />
       <div
         style={{

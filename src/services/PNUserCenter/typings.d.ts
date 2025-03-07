@@ -31,6 +31,7 @@ declare namespace API {
     creamStat?: number;
     current?: number;
     officalStat?: number;
+    readType?: number;
     recommend?: number;
     shortTitle?: string;
     size?: number;
@@ -70,8 +71,8 @@ declare namespace API {
     context?: string;
     countVo?: ArticleFootCountVo;
     cover?: string;
+    needTpPay?: boolean;
     officalStat?: number;
-    paid?: boolean;
     payImageUrl?: string;
     recommend?: number;
     shortTitle?: string;
@@ -147,6 +148,11 @@ declare namespace API {
   type getCodeUsingGETParams = {
     /** username */
     username: string;
+  };
+
+  type isPaidUsingGETParams = {
+    /** articleId */
+    articleId: number;
   };
 
   type loginUsingGETParams = {
