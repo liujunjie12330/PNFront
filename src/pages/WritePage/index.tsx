@@ -25,7 +25,10 @@ import {
 import { saveArticleUsingPost } from '@/services/PNUserCenter/articleController';
 import { listAllCatalogsUsingGet } from '@/services/PNUserCenter/catalogController';
 import { uploadArticleImageUsingPost } from '@/services/PNUserCenter/fileController';
-import { existAlipayUserInfoUsingGet } from '@/services/PNUserCenter/userSettingController';
+import {
+  bindAlipayAccountUsingGet,
+  existAlipayUserInfoUsingGet,
+} from '@/services/PNUserCenter/userSettingController';
 import { MapItem } from '@/typings/common';
 import {
   AlipayOutlined,
@@ -81,6 +84,13 @@ const WritePage: React.FC = () => {
     };
     fetchCatalogs();
   }, []);
+
+  const bindAlipay = async () => {
+    const res = await bindAlipayAccountUsingGet();
+    if (res.code === 200 && res.data != null && res.data != '') {
+      window.open(res.data);
+    }
+  };
 
   const handleChange = (item: MapItem) => {
     setArticle({ ...article, ...item });
@@ -173,9 +183,7 @@ const WritePage: React.FC = () => {
                 title: '提醒',
                 content: '您还没有绑定支付宝账户，是否绑定？',
                 onOk() {
-                  window.location.assign(
-                    'http://localhost:9999/v1/usercenter/server/userSetting/bindUserAlipay',
-                  );
+                  bindAlipay();
                 },
                 onCancel() {
                   console.log('用户取消付费阅读');
@@ -249,12 +257,13 @@ const WritePage: React.FC = () => {
     <div className="page-wrap">
       {/* 顶部导航栏 */}
       <div style={{ display: 'flex', flexDirection: 'column' }}>
-        <Tag style={{ width: '75px' }}>
-          <DoubleLeftOutlined
-            onClick={() => {
-              navigate(-1);
-            }}
-          />
+        <Tag
+          style={{ width: '75px' }}
+          onClick={() => {
+            navigate(-1);
+          }}
+        >
+          <DoubleLeftOutlined />
           点击返回
         </Tag>
       </div>

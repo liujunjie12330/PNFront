@@ -1,11 +1,12 @@
-import {Avatar, Card, Divider, List, Modal, Skeleton, Tag} from 'antd';
+import { Avatar, Card, Divider, List, Modal, Skeleton, Tag } from 'antd';
 import React, { useEffect, useState } from 'react';
 // @ts-ignore
 import { ReadType } from '@/emun/Article';
 import { isPaidUsingGet, pageArticleUsingPost } from '@/services/PNUserCenter/articleController';
 import { EyeFilled, LikeOutlined, MessageOutlined } from '@ant-design/icons';
-import InfiniteScroll from 'react-infinite-scroll-component';
 import { history } from '@umijs/max';
+import InfiniteScroll from 'react-infinite-scroll-component';
+
 const ArticleList: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState<API.ArticleIndexVo[]>([]);
@@ -57,19 +58,25 @@ const ArticleList: React.FC = () => {
               key={item.articleId}
               onClick={async () => {
                 if (item.readType === ReadType.PAY_READ.value) {
+                  // @ts-ignore
                   const res = await isPaidUsingGet({ articleId: item.articleId });
-                  if (res.code === 200 && res.data!=null && !res.data) {
+                  if (res.code === 200 && res.data != null && !res.data) {
                     Modal.confirm({
                       title: '提醒',
                       content: '该文章是付费文章,您还没有支付过该文章,是否支付?',
                       onOk() {
-                        history.push("/article/detail/"+item.articleId);
+                        window.open('/article/detail/' + item.articleId, '_blank');
+                        history.push('/transfer/' + item.articleId);
                       },
                       onCancel() {
                         console.log('用户取消付费阅读');
                       },
                     });
+                  } else {
+                    history.push('/article/detail/' + item.articleId);
                   }
+                } else {
+                  history.push('/article/detail/' + item.articleId);
                 }
               }}
             >
